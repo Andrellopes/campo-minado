@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="manifest" href="img/site.webmanifest">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="js/game.js"></script>
+    <script src="js/renderScreen.js"></script>
+    <script src="js/clickListener.js"></script>
+    <script src="js/audioEffects.js"></script>
+</head>
+<body>
+
+    <div class="modal" tabindex="-1" role="dialog" id="settingsModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Settings</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="btn-group btn-group-toggle" data-toggle="buttons" id="level">
+                  <label class="btn btn-secondary  active">
+                      <input type="radio" name="options" value="Easy" autocomplete="off" checked> Easy
+                  </label>
+                  <label class="btn btn-secondary ">
+                      <input type="radio" name="options" value="Moderate" autocomplete="off"> Moderate
+                  </label>
+                  <label class="btn btn-secondary ">
+                      <input type="radio" name="options" value="Hard" autocomplete="off"> Hard
+                  </label>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="btnStartGame" data-dismiss="modal">Start Game</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="mainSection"> 
+        <div class="row">
+            <div class="col-md-1">
+                <p>
+                    <button type="button" class="btn btn-primary" id="settingsButton">
+                        <span class="material-icons">settings</span>
+                    </button>
+                </p>
+                <p>
+                    <div id="bombsPanel"></div>
+                    <div id="timerPanel"></div>
+                </p>
+            </div>
+            <div class="col-md-auto">
+                <div id="board"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        $("#btnStartGame").click(() => {
+            startGame($("#level input:radio:checked").val())
+        })
+
+        $("#settingsButton").click(() => {
+            $('#settingsModal').modal()
+        })
+
+        function startGame(level){
+            var board = document.getElementById("board")
+            var sounds = createAudioEffects()
+            var clickListener = createClickListener()
+            var game = createGame(clickListener, sounds)        
+            game.initializeBoard(level)
+            var screen = renderScreen(board, game, clickListener)
+        }  
+        
+        startGame("Easy")     
+    </script>
+</body>
+</html>
